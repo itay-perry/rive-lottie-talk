@@ -1,32 +1,55 @@
 const animation = lottie.loadAnimation({
   container: document.getElementById("lottie"), // the DOM element
   renderer: "svg", // or 'canvas', 'html'
-  path: "./dinosaur.json", 
+  path: "./dinosaur.json",
 });
 
-// 🌼 Controls built to play with it in Vanilla JS 🌼
+// 🌼 Controls built to play with lottie-web in Vanilla JS 🌼
 const speedInput = document.getElementById("speed");
 const speedValue = document.getElementById("speedValue");
 const frameDisplay = document.getElementById("currentFrame");
 const loopBtn = document.getElementById("loopBtn");
+const loopBtnText = document.getElementById("loopBtnText");
 const animationProgressBar = document.getElementById("animationProgressBar");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const totalFrames = document.getElementById("totalFrames");
 
+const someConstants = {
+  playIcon: "▶️",
+  pauseIcon: "⏸️",
+  loopOnText: "on",
+  loopOffText: "off",
+};
+
+function updatePlayButton(isPlaying) {
+  playPauseBtn.textContent = isPlaying
+    ? someConstants.pauseIcon
+    : someConstants.playIcon;
+}
+
+function updateLoopButton(isLooping) {
+  loopBtnText.textContent = isLooping
+    ? someConstants.loopOnText
+    : someConstants.loopOffText;
+}
+
 function resetPlayer() {
   animationProgressBar.value = 0;
   frameDisplay.textContent = 0;
-  playPauseBtn.textContent = "▶️";
+  updatePlayButton(false);
   animation.goToAndStop(0, true);
 }
 
 function init() {
   resetPlayer();
 
+  // autoplay
+  animation.autoplay = false;
   // loop
   animation.loop = false;
-  loopBtn.textContent = "Loop off";
+  updateLoopButton(false);
 
+  // speed
   const initialSpeed = 0.5;
   animation.setSpeed(initialSpeed);
   speedValue.textContent = initialSpeed;
@@ -40,19 +63,17 @@ speedInput.addEventListener("input", () => {
   speedValue.textContent = speed.toFixed(1);
 });
 
-animation.addEventListener("enterFrame", function (e) {
-  // frameDisplay.textContent = Math.floor(e.currentTime);
-  frameDisplay.textContent = e.currentTime.toFixed(1);
-});
-
 loopBtn.addEventListener("click", () => {
   animation.loop = !animation.loop;
-  loopBtn.textContent = `Loop ${animation.loop ? "🔁" : "off"}`;
+  updateLoopButton(animation.loop);
 });
 
 let isScrubbing = false;
 
 animation.addEventListener("enterFrame", (e) => {
+  // Update frame display
+  frameDisplay.textContent = e.currentTime.toFixed(1);
+
   if (isScrubbing) return; // don’t overwrite while dragging
   console.log(e.currentTime);
   const progressPercent = Math.round(
@@ -84,11 +105,11 @@ animation.addEventListener("DOMLoaded", () => {
 });
 
 playPauseBtn.addEventListener("click", () => {
-  if (animation.isPaused || animation.isStopped) {
+  const isPausedOrStopped = animation.isPaused || animation.isStopped;
+  if (isPausedOrStopped) {
     animation.play();
-    playPauseBtn.textContent = "⏸️";
   } else {
     animation.pause();
-    playPauseBtn.textContent = "▶️";
   }
+  updatePlayButton(isPausedOrStopped);
 });

@@ -1,8 +1,47 @@
-#firstSection,
-#secondSection {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+* {
+    font-family: "Work Sans", sans-serif;
 }
 
+body {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+
+#firstSection,
+#secondSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+#loopBtn {
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    background-color: #000;
+    color: white;
+    border: 1px solid #a0a0a0;
+    cursor: pointer;
+    font-size: 1.125rem;
+    &:hover {
+        background-color: #533253;
+    }
+}
+
+#thirdSection {
+    #playSegmentBtn {
+        padding: 0.5rem 1.75rem;
+        border-radius: 0.5rem;
+        background-color: #000;
+        color: white;
+        border: 1px solid #a0a0a0;
+        cursor: pointer;
+        font-size: 1.125rem;
+        &:hover {
+            background-color: #533253;
+        }
+    }
+}
