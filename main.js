@@ -1,10 +1,8 @@
 const animation = lottie.loadAnimation({
   container: document.getElementById("lottie"), // the DOM element
   renderer: "svg", // or 'canvas', 'html'
-  path: "./LoadingSuccessError.json", 
+  path: "./dinosaur.json", 
 });
-
-
 
 // 🌼 Controls built to play with it in Vanilla JS 🌼
 const speedInput = document.getElementById("speed");
