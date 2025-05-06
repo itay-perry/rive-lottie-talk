@@ -13,6 +13,9 @@ const loopBtnText = document.getElementById("loopBtnText");
 const animationProgressBar = document.getElementById("animationProgressBar");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const totalFrames = document.getElementById("totalFrames");
+const startFrameInput = document.getElementById("startFrame");
+const endFrameInput = document.getElementById("endFrame");
+const playSegmentBtn = document.getElementById("playSegmentBtn");
 
 const someConstants = {
   playIcon: "▶️",
@@ -33,6 +36,7 @@ function updateLoopButton(isLooping) {
     : someConstants.loopOffText;
 }
 
+// seems problematic? requires checking 👾
 function resetPlayer() {
   animationProgressBar.value = 0;
   frameDisplay.textContent = 0;
@@ -41,7 +45,9 @@ function resetPlayer() {
 }
 
 function init() {
-  resetPlayer();
+  animationProgressBar.value = 0;
+  frameDisplay.textContent = 0;
+  updatePlayButton(false);
 
   // autoplay
   animation.autoplay = false;
@@ -68,19 +74,15 @@ loopBtn.addEventListener("click", () => {
   updateLoopButton(animation.loop);
 });
 
-let isScrubbing = false;
+// let isScrubbing = false;
 
 animation.addEventListener("enterFrame", (e) => {
-  // Update frame display
-  frameDisplay.textContent = e.currentTime.toFixed(1);
-
-  if (isScrubbing) return; // don’t overwrite while dragging
-  console.log(e.currentTime);
-  const progressPercent = Math.round(
-    (e.currentTime / animation.totalFrames) * 100
-  );
-  console.log(progressPercent);
-  animationProgressBar.value = progressPercent.toFixed(1);
+  // if (isScrubbing) return;
+  // Always show actual frame number
+  // debugger;
+  frameDisplay.textContent = Number(e.currentTime).toFixed(1);
+  // Always update progress bar based on current frame
+  animationProgressBar.value = Number(e.currentTime);
 });
 
 animation.addEventListener("complete", () => {
@@ -89,10 +91,16 @@ animation.addEventListener("complete", () => {
 });
 
 animationProgressBar.addEventListener("input", () => {
+  const isPausedOrStopped = animation.isPaused || animation.isStopped;
+
   isScrubbing = true;
-  const percent = parseFloat(animationProgressBar.value) / 100;
-  const targetFrame = percent * animation.totalFrames;
-  animation.goToAndStop(targetFrame, true);
+  if (isPausedOrStopped) {
+    animation.goToAndStop(animationProgressBar.value, true);
+    // animation.goToAndStop triggers complete which is bad
+    // do nothing?
+  } else {
+    animation.goToAndPlay(animationProgressBar.value, true);
+  }
 });
 
 animationProgressBar.addEventListener("change", () => {
@@ -102,14 +110,30 @@ animationProgressBar.addEventListener("change", () => {
 animation.addEventListener("DOMLoaded", () => {
   console.log("Total frames:", animation.totalFrames);
   totalFrames.textContent = animation.totalFrames;
+
+  // Set the range input to cover all frames
+  animationProgressBar.min = 0;
+  animationProgressBar.max = animation.totalFrames;
+  animationProgressBar.value = 0;
 });
 
 playPauseBtn.addEventListener("click", () => {
   const isPausedOrStopped = animation.isPaused || animation.isStopped;
   if (isPausedOrStopped) {
-    animation.play();
+    // animation.play();
+    animation.goToAndPlay(animationProgressBar.value, true);
   } else {
-    animation.pause();
+    // animation.pause();
+    animation.goToAndStop(animationProgressBar.value, true);
   }
   updatePlayButton(isPausedOrStopped);
+});
+
+playSegmentBtn.addEventListener("click", () => {
+  const start = parseInt(startFrameInput.value);
+  const end = parseInt(endFrameInput.value);
+
+  animation.playSegments([start, end], true);
+
+  updatePlayButton(true);
 });
