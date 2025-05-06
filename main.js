@@ -78,10 +78,8 @@ loopBtn.addEventListener("click", () => {
 
 animation.addEventListener("enterFrame", (e) => {
   // if (isScrubbing) return;
-  // Always show actual frame number
-  // debugger;
+
   frameDisplay.textContent = Number(e.currentTime).toFixed(1);
-  // Always update progress bar based on current frame
   animationProgressBar.value = Number(e.currentTime);
 });
 
@@ -96,8 +94,6 @@ animationProgressBar.addEventListener("input", () => {
   isScrubbing = true;
   if (isPausedOrStopped) {
     animation.goToAndStop(animationProgressBar.value, true);
-    // animation.goToAndStop triggers complete which is bad
-    // do nothing?
   } else {
     animation.goToAndPlay(animationProgressBar.value, true);
   }
@@ -109,9 +105,8 @@ animationProgressBar.addEventListener("change", () => {
 
 animation.addEventListener("DOMLoaded", () => {
   console.log("Total frames:", animation.totalFrames);
-  totalFrames.textContent = animation.totalFrames;
+  totalFrames.textContent = animation.totalFrames - 1;
 
-  // Set the range input to cover all frames
   animationProgressBar.min = 0;
   animationProgressBar.max = animation.totalFrames;
   animationProgressBar.value = 0;
@@ -120,10 +115,8 @@ animation.addEventListener("DOMLoaded", () => {
 playPauseBtn.addEventListener("click", () => {
   const isPausedOrStopped = animation.isPaused || animation.isStopped;
   if (isPausedOrStopped) {
-    // animation.play();
     animation.goToAndPlay(animationProgressBar.value, true);
   } else {
-    // animation.pause();
     animation.goToAndStop(animationProgressBar.value, true);
   }
   updatePlayButton(isPausedOrStopped);
