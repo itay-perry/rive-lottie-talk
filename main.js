@@ -105,10 +105,10 @@ animationProgressBar.addEventListener("change", () => {
 
 animation.addEventListener("DOMLoaded", () => {
   console.log("Total frames:", animation.totalFrames);
-  totalFrames.textContent = animation.totalFrames - 1;
+  totalFrames.textContent = animation.totalFrames;
 
   animationProgressBar.min = 0;
-  animationProgressBar.max = animation.totalFrames;
+  animationProgressBar.max = animation.totalFrames - 1;
   animationProgressBar.value = 0;
 });
 
