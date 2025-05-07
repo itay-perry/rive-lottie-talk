@@ -17,6 +17,7 @@ const startFrameInput = document.getElementById("startFrame");
 const endFrameInput = document.getElementById("endFrame");
 const playSegmentBtn = document.getElementById("playSegmentBtn");
 
+let currentSegment = null;
 const someConstants = {
   playIcon: "▶️",
   pauseIcon: "⏸️",
@@ -24,8 +25,8 @@ const someConstants = {
   loopOffText: "off",
 };
 
-function updatePlayButton(isPlaying) {
-  playPauseBtn.textContent = isPlaying
+function updatePlayButton(button, isPlaying) {
+  button.textContent = isPlaying
     ? someConstants.pauseIcon
     : someConstants.playIcon;
 }
@@ -40,14 +41,13 @@ function updateLoopButton(isLooping) {
 function resetPlayer() {
   animationProgressBar.value = 0;
   frameDisplay.textContent = 0;
-  updatePlayButton(false);
+  updatePlayButton(playPauseBtn, false);
+  updatePlayButton(playSegmentBtn, false);
   animation.goToAndStop(0, true);
 }
 
 function init() {
-  animationProgressBar.value = 0;
-  frameDisplay.textContent = 0;
-  updatePlayButton(false);
+  resetPlayer();
 
   // autoplay
   animation.autoplay = false;
@@ -77,10 +77,15 @@ loopBtn.addEventListener("click", () => {
 // let isScrubbing = false;
 
 animation.addEventListener("enterFrame", (e) => {
-  // if (isScrubbing) return;
+  let currentFrame = Number(e.currentTime);
 
-  frameDisplay.textContent = Number(e.currentTime).toFixed(1);
-  animationProgressBar.value = Number(e.currentTime);
+  // If playing a segment, offset the frame number
+  if (currentSegment) {
+    currentFrame += currentSegment[0];
+  }
+
+  frameDisplay.textContent = currentFrame.toFixed(1);
+  animationProgressBar.value = currentFrame;
 });
 
 animation.addEventListener("complete", () => {
@@ -93,9 +98,10 @@ animationProgressBar.addEventListener("input", () => {
 
   isScrubbing = true;
   if (isPausedOrStopped) {
-    animation.goToAndStop(animationProgressBar.value, true);
+    // animation.goToAndPlay(animationProgressBar.value, true);
+    animation.goToAndStop(Number(animationProgressBar.value), true);
   } else {
-    animation.goToAndPlay(animationProgressBar.value, true);
+    animation.goToAndPlay(Number(animationProgressBar.value), true);
   }
 });
 
@@ -113,20 +119,23 @@ animation.addEventListener("DOMLoaded", () => {
 });
 
 playPauseBtn.addEventListener("click", () => {
+  currentSegment = null;
+  animation.resetSegments();
   const isPausedOrStopped = animation.isPaused || animation.isStopped;
   if (isPausedOrStopped) {
-    animation.goToAndPlay(animationProgressBar.value, true);
+    animation.goToAndPlay(Number(animationProgressBar.value), true);
   } else {
-    animation.goToAndStop(animationProgressBar.value, true);
+    animation.goToAndStop(Number(animationProgressBar.value), true);
   }
-  updatePlayButton(isPausedOrStopped);
+  updatePlayButton(playPauseBtn, isPausedOrStopped);
 });
 
 playSegmentBtn.addEventListener("click", () => {
   const start = parseInt(startFrameInput.value);
   const end = parseInt(endFrameInput.value);
 
+  currentSegment = [start, end];
+  // Forcing true on .playSegments restricts future playing - GitHub #101
   animation.playSegments([start, end], true);
-
-  updatePlayButton(true);
+  updatePlayButton(playSegmentBtn, true);
 });
