@@ -10,12 +10,12 @@
     />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Lottie Web</title>
   </head>
 
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
-    <div>
+    <div class="lottie-controls">
       <div id="lottie" style="width: 400px; height: 400px"></div>
       <!-- <label for="scrubber">Progress:</label> -->
       <section id="firstSection">
@@ -65,11 +65,19 @@
             <label style="display: block">End Frame</label>
             <input type="number" id="endFrame" min="0" />
           </div>
-          <button id="playSegmentBtn">Play Segment</button>
+
+          <span
+            style="font-size: 1.75rem; cursor: pointer"
+            id="playSegmentBtn"
+          ></span>
         </div>
       </section>
     </div>
 
     <script src="main.js"></script>
+    <script src="https://unpkg.com/@rive-app/canvas"></script>
+    <!-- <canvas id="canvas" width="400" height="400"></canvas> -->
+    <!-- <script src="riveStateMachine.js"></script> -->
+    <!-- <script src="classicUse.js"></script> -->
   </body>
 </html>
