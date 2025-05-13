@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <lottie-player id="myAnimation" loop autoplay src="./fly.json" style="width:400px; height: 400px;"></lottie-player>
+  <script src="https://unpkg.com/@lottiefiles/lottie-interactivity@latest/dist/lottie-interactivity.min.js"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@1/dist/lottie-player.js"></script>
+  <script>
+    LottieInteractivity.create({
+      player: "#myAnimation",
+      mode: "cursor",
+      actions: [
+        {
+          type: "click",
+        },
+      ]
+    });
+  </script>
+</body>
+
+</html>
