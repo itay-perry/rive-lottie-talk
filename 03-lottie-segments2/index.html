@@ -12,13 +12,13 @@
     const animation = lottie.loadAnimation({
       container: document.getElementById("lottie"),
       renderer: "svg", // or 'canvas', 'html'
-      path: "./sun-and-moon.json",
+      path: "./day-and-night.json",
       loop: true,
     });
     animation.addEventListener("DOMLoaded", () => {
       animation.playSegments(
-        // [[25, 125]], // ☀️ day
-        [[220, 324]], // 🌙 night
+        // [[26, 100]], // ☀️ day
+        [[140, 170]], // 🌙 night
         true
       );
     });

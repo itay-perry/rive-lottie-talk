@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div id="container">
+    <div id="lottie"></div>
+    <div id="radioContainer">
+      <label class="radio-label">
+        <input type="radio" name="animationSegment" value="normal" checked />
+        Play Raw
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="animationSegment" value="day" />
+        Day (25-125)
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="animationSegment" value="night" />
+        Night (220-324)
+      </label>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+  <script defer>
+    const animation = lottie.loadAnimation({
+      container: document.getElementById("lottie"),
+      renderer: "svg",
+      path: "./sun-and-moon.json",
+      loop: true,
+    });
+
+    function playSegment(segmentType) {
+      animation.stop();
+      animation.resetSegments();
+
+      switch (segmentType) {
+        case 'normal':
+          animation.play();
+          break;
+        case 'day':
+          animation.playSegments([[25, 125]], true);
+          break;
+        case 'night':
+          animation.playSegments([[220, 324]], true);
+          break;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const radioInputs = document.querySelectorAll('input[name="animationSegment"]');
+
+      radioInputs.forEach(radio => {
+        radio.addEventListener("change", e => e.target.checked && playSegment(e.target.value));
+      });
+
+      // Start with normal animation
+      animation.addEventListener("DOMLoaded", () => {
+        playSegment('normal');
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,34 +1,25 @@
 let movementInput;
 const r = new rive.Rive({
-  src: "./cute.riv",
+  src: "./sun_and_moon.riv",
   canvas: document.getElementById("canvas"),
   autoplay: true,
   stateMachines: "State Machine 1",
   onLoad: () => {
-    // Ensure the drawing surface matches the canvas size and device pixel ratio
     r.resizeDrawingSurfaceToCanvas();
-    const inputs = r.stateMachineInputs("State Machine 1");
-    movementInput = inputs[0];
-    console.log(inputs);
+    movementInput = r.stateMachineInputs("State Machine 1")[0];
   },
 });
 
-// Function to update movement.value based on select input
-function updateMovementValue(newValue) {
-  movementInput.value = newValue;
-  console.log(`Movement value updated to: ${movementInput.value}`);
+function updateMovementValue(value) {
+  movementInput.value = value;
 }
 
-// Add event listener to the select element
 document.addEventListener("DOMContentLoaded", () => {
-  const selectElement = document.getElementById("numberSelect");
-  console.log(selectElement);
-  // Update movement.value on change
-  selectElement.value = 1;
-  selectElement.addEventListener("change", (event) => {
-    updateMovementValue(event.target.value);
+  const radioInputs = document.querySelectorAll('input[name="dayNight"]');
+
+  radioInputs.forEach(radio => {
+    radio.addEventListener("change", e => e.target.checked && updateMovementValue(e.target.value));
   });
 
-  // Set initial value on load
-  updateMovementValue(selectElement.value);
+  updateMovementValue(document.querySelector('input[name="dayNight"]:checked').value);
 });

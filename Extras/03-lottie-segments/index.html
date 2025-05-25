@@ -10,18 +10,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
   <script defer>
     const animation = lottie.loadAnimation({
-      container: document.getElementById("lottie"),
+      container: document.getElementById("lottie"), // the DOM element
       renderer: "svg", // or 'canvas', 'html'
-      path: "./day-and-night.json",
+      path: "./reactAnimation.json",
       loop: true,
     });
+    // perhaps a button that plays the segemnt - on first load it plays everything
     animation.addEventListener("DOMLoaded", () => {
       animation.playSegments(
-        // [[26, 100]], // ☀️ day
-        [[140, 170]], // 🌙 night
+        [[55, 190]],
         true
       );
     });
+    // animation.setSpeed(0.3);
   </script>
 </body>
 
