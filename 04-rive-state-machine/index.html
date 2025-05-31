@@ -23,30 +23,30 @@
 
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <script>
-    let movementInput;
+    let dayAndNightInput; const stateMachineName = "State Machine 1"
     const r = new rive.Rive({
       src: "./sun_and_moon.riv",
       canvas: document.getElementById("canvas"),
-      stateMachines: "State Machine 1",
+      stateMachines: stateMachineName,
       autoplay: true,
       onLoad: () => {
         r.resizeDrawingSurfaceToCanvas();
-        movementInput = r.stateMachineInputs("State Machine 1")[0];
+        dayAndNightInput = r.stateMachineInputs(stateMachineName)[0];
       },
     });
 
-    function updateMovementValue(value) {
-      movementInput.value = value;
+    function updateDayAndNightInput(value) {
+      dayAndNightInput.value = value;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       const radioInputs = document.querySelectorAll('input[name="dayNight"]');
 
       radioInputs.forEach(radio => {
-        radio.addEventListener("change", e => e.target.checked && movementInput && updateMovementValue(e.target.value));
+        radio.addEventListener("change", e => e.target.checked && dayAndNightInput && updateDayAndNightInput(e.target.value));
       });
 
-      updateMovementValue(document.querySelector('input[name="dayNight"]:checked')?.value);
+      updateDayAndNightInput(document.querySelector('input[name="dayNight"]:checked')?.value);
     });
   </script>
 </body>
