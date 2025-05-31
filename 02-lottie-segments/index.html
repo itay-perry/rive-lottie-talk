@@ -25,18 +25,19 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
-  <script defer>
+  <script>
     const animation = lottie.loadAnimation({
       container: document.getElementById("lottie"),
       renderer: "svg",
       path: "./sun-and-moon.json",
+      autoplay: true,
       loop: true,
     });
 
-    function playSegment(segmentType) {
-      animation.resetSegments();
-      animation.stop(); // not using this will wait for the segment to complete
+    // animation.resetSegments();
+    // animation.stop();
 
+    function playSegment(segmentType) {
       switch (segmentType) {
         case 'raw':
           animation.playSegments([[0, 359]], true);
