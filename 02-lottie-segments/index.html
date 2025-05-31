@@ -10,7 +10,7 @@
     <div id="lottie"></div>
     <div id="radioContainer">
       <label class="radio-label">
-        <input type="radio" name="animationSegment" value="normal" checked />
+        <input type="radio" name="animationSegment" value="raw" checked />
         Play Raw
       </label>
       <label class="radio-label">
@@ -34,12 +34,12 @@
     });
 
     function playSegment(segmentType) {
-      animation.stop();
       animation.resetSegments();
+      animation.stop(); // not using this will wait for the segment to complete
 
       switch (segmentType) {
-        case 'normal':
-          animation.play();
+        case 'raw':
+          animation.playSegments([[0, 359]], true);
           break;
         case 'day':
           animation.playSegments([[25, 125]], true);
@@ -57,9 +57,9 @@
         radio.addEventListener("change", e => e.target.checked && playSegment(e.target.value));
       });
 
-      // Start with normal animation
+      // Start with raw animation
       animation.addEventListener("DOMLoaded", () => {
-        playSegment('normal');
+        playSegment('raw');
       });
     });
   </script>
