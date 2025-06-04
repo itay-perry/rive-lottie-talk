@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 
+<!-- 
+ I wanna thank Marvin Te who changed this 
+ animation for me - so it wouldn't automaticallly 
+ bind to a (Rive) joystick, and it can be data-binded freely
+ -->
+
 <head>
   <link rel="stylesheet" href="styles.css" />
   <title>Rive Data Binding</title>
@@ -38,59 +44,32 @@
     }
 
     const r = new rive.Rive({
-      src: "./girl_animation_(cursor_tracking).riv",
+      src: "./girl_animation_manual.riv",
       canvas: document.getElementById("canvas"),
       autoBind: true,
       stateMachines: ["State Machine 1"],
       autoplay: true,
       onLoad: () => {
-        // r.resizeDrawingSurfaceToCanvas();
-        // Access the current instance that was auto-bound
         const vmi = r.viewModelInstance;
-        const numberProperty = vmi.number("Mouse X");
-        const numberProperty2 = vmi.number("Mouse Y");
-
+        moveX = vmi.number("Mouse X");
+        moveY = vmi.number("Mouse Y");
+        r.bindViewModelInstance(vmi);
         r.resizeDrawingSurfaceToCanvas();
-
-        numberProperty2.on((event) => {
-          console.log(event);
-        });
-        // moveY = vmiDefault.number("Mouse Y");
-        // moveX = vmiDefault.number("Mouse X");
-        console.log(numberProperty.value);
-
-
-        // r.resizeDrawingSurfaceToCanvas();
-        // // Access the current instance that was auto-bound
-        // const namedVM = r.viewModelByName("View Model 1");
-        // const vmiDefault = namedVM.defaultInstance();
-        // r.bindViewModelInstance(vmiDefault);
-        // moveY = vmiDefault.number("Mouse Y");
-        // moveX = vmiDefault.number("Mouse X");
-        // console.log(moveY, moveX);
       },
     });
 
     // DOM loaded
     document.addEventListener("DOMContentLoaded", () => {
-      debugger;
-      // Throttled listener for mouse coordinates display
-      const throttledMouseMove = throttle((e) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX;
-        const y = e.clientY;
+      const maxWidth = window.innerWidth;
+      const maxHeight = window.innerHeight;
+      document.addEventListener("mousemove", function (event) {
+        moveX.value = 1920 * (event.clientX / maxWidth);
+        moveY.value = 1080 * ((event.clientY + window.scrollY) / maxHeight);
 
-        // Update display elements with 2 decimal places
-        xCoordElement.textContent = x.toFixed(2);
-        yCoordElement.textContent = y.toFixed(2);
-
-      }, 50); // 50ms delay
-
-      document.addEventListener("mousemove", throttledMouseMove);
+        xCoordElement.textContent = `${event.clientX}`;
+        yCoordElement.textContent = `${event.clientY}`;
+      });
     });
-
-
-
   </script>
 </body>
 
