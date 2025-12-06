@@ -1,0 +1,59 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "01-simple-lottie",
+            "type": "shell",
+            "command": "npx serve ./01-simple-lottie -p 3001",
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "02-lottie-segments",
+            "type": "shell",
+            "command": "npx serve ./02-lottie-segments -p 3002",
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "03-rive-state-machine",
+            "type": "shell",
+            "command": "npx serve ./03-rive-state-machine -p 3003",
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "04-rive-community",
+            "type": "shell",
+            "command": "npx serve ./04-rive-community -p 3004",
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Start All Examples",
+            "dependsOn": [
+                "01-simple-lottie",
+                "02-lottie-segments",
+                "03-rive-state-machine",
+                "04-rive-community"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
